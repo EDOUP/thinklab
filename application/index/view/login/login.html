@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap-responsive.min.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/theme.css">
+  	
+  <!-- javascript //--> 	
+  <script src="/javascripts/jquery-1.7.2.min.js"></script>
+  <script src="/javascripts/bootstrap.js" type="text/javascript"></script>
+	
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+	{include file="views/header.html" /}
+	<div id="content">
+	<div class="container">
+		  <div class="row">
+			<div id="login-container">
+				<div id="login-header">
+					
+					<h3>Login</h3>
+
+				</div>
+				<div id="login-content"  class="clearfix">
+				
+				<form  method="post" >
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label" for="username">用户名</label>
+									<div class="controls">
+										<input type="text" autocomplete="off" name="username">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="password">密码</label>
+									<div class="controls">
+										<input type="password"  name="password">
+									</div>
+								</div>
+
+
+							<!--
+							<div id="remember-me" class="pull-left">
+								<input type="checkbox" name="remember" id="remember">
+								<label id="remember-label" for="remember">记住我</label>
+							</div>
+							-->
+							<div class="pull-right">
+								<button type="submit" class="btn btn-warning btn-large" formaction="/index/login/verify">
+									登陆
+								</button>
+								<button type="submit" class="btn btn-warning btn-large" formaction="/index/login/register">
+									注册
+								</button>
+							</div>	
+	
+							</fieldset>						
+				 </form>							
+							
+				</div> <!-- /login-content -->，						
+			</div> <!-- /login-wrapper -->
+		
+		  </div>
+		</div>	
+				
+	</div>
+
+</body>
+</html>

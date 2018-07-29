@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home | 设备管理</title>
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap-responsive.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+  <!-- rmpt直播 need -->
+  <link href="http://vjs.zencdn.net/5.5.3/video-js.css" rel="stylesheet">    
+  <!-- If you'd like to support IE8 -->    
+  <script src="http://vjs.zencdn.net/ie8/1.1.1/videojs-ie8.min.js"></script>    
+  <script src="/static/javascripts/jquery-1.7.2.min.js"></script>
+  <script src="/static/javascripts/bootstrap.js" type="text/javascript"></script>
+  <style type="text/css">
+    .labvideo{
+      float: left;
+    } 
+    .mainvideo{
+    float:left;
+   }
+  </style>
+
+</head>
+
+
+<body>
+  <div >{include file="index/header"/}</div>
+  <div id="content" >{include file="index/sidebar-top"/}</div>
+
+<div class="labvideo">
+  <div class='col-lg-3 col-md-3 auto-padding video-info'>
+    <div class="video-title">监控信息</div>
+   <div class="video-info-wrapper">
+      <div class="video-info-wrapper-title">选择设备：</div>
+        <div class="dropSelectsId">
+          <select v-model="selectedId" v-if="allUids">
+            <option v-for="id in allUids" :value="id">{$id}</option>
+          </select>
+          <button type="button" class="btn btn-primary btn-xs button-font" @click="changeRtmp()" ref="playById">确定</button>
+          <button type="button" class="btn btn-warning btn-xs button-font" @click="initPlayer()" ref="playById">刷新</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+ <div class="mainvideo">
+  <div class="video-title">视频监控</div>
+  <video id="my-video" class="video-js" controls preload="auto" width="640" height="300"  autoplay="autoplay"  poster="/static/images/video-gxy.jpg" data-setup="{}">    
+      <source src="rtmp://live.hkstv.hk.lxdns.com/live/hks" type="rtmp/flv">    
+        <!-- 如果上面的rtmp流无法播放，就播放hls流 -->    
+        <!-- <source src="http://10.10.5.119/live/livestream.m3u8" type='application/x-mpegURL'> -->
+        <p class="vjs-no-js">播放视频需要启用JavaScript，推荐使用支持HTML5的浏览器访问。    
+        To view this video please enable JavaScript, and consider upgrading to a web browser that    
+          <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>    
+         </p>    
+  </video>    
+      <div class="video-footer">
+        地点：工学院；时间：{$time|date='y/m/d H:i:s'}
+      </div>
+</div>
+
+
+<script src="http://vjs.zencdn.net/5.5.3/video.js"></script>    
+<style>
+  #playercontainer{
+    width: 100% !important;
+  }
+  .jwplayer .jw-icon-barlogo-new{
+    display: none;
+  }
+  .video-info{
+    margin-bottom: 20px;
+  }
+  .video-wrapper{
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .video-title{
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #fff;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+  .video-footer{
+    border-top: 1px solid #f0f0f0;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    padding-left: 10px;
+  }
+  .video-info-wrapper{
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 100%;
+    height: auto;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: #ffffff;
+  }
+  .vjs-big-play-button{
+    width: 2em!important;
+    border-radius: 1em!important;
+    background: rgba(0,0,0,0.1)!important;
+    transition: background .2s;
+  }
+ 
+</style>
+
+
+</body>
+</html>

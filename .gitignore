@@ -1,0 +1,7 @@
+/.idea
+/.vscode
+/vendor
+/config/database.php
+*.log
+/thinkphp
+.env

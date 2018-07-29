@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>login</title>
+		<link rel="stylesheet"  type="text/css" href="/static/stylesheets/bootstrap-responsive.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+		
+		<!-- javascript //--> 	
+		<script src="/static/javascripts/jquery-1.7.2.min.js"></script>
+		<script src="/static/javascripts/bootstrap.js" type="text/javascript"></script> 
+		<style type="text/css">
+					.imgleft{					
+					float: left;
+					}
+					.content{
+						 float: left;
+						 text-align: center;
+
+					}
+		</style> 
+</head>
+	
+<body>
+<div  class=login>
+	<div class='imgleft'>
+	 	<img  src="http://static.simmzl.cn/blog/180121/Bgf66eI9jH.png?imageslim"></div>
+ 
+      <div class='content'>
+			{switch name="$Think.get.id"}	
+				{case value="0"}
+					{include file="/login/register"}{/case}			
+				{default/}
+					{include file="/login/login1"}
+			{/switch}		
+      </div>
+	</div> 
+</body>
+
+</html>

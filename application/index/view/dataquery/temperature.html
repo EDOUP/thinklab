@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>temperature | 后台管理</title>
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/zTreeStyle.css">	
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap-responsive.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+  <!-- javascript //--> 	
+  <script src="/static/javascripts/jquery-1.7.2.min.js"></script>
+  <script src="/static/javascripts/bootstrap.js" type="text/javascript"></script>
+  <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+  <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+  <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>	
+  <script src="/static/javascripts/jquery.ztree.core.js"></script>
+  <script src="/static/javascripts/jquery.ztree.excheck.min.js"></script>
+  <script src="https://cdn.bootcss.com/layer/3.0.3/layer.min.js"></script>	
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div >{include file="index/header"/}</div>
+	<div id="content" >{include file="index/sidebar-top"/}</div>
+	<div class="container-fluid">
+	  <div class="row-fluid">
+	  	<!-- left side //-->
+
+	    <!-- content //-->
+	    <div class="span12">				
+			<div class="widget" id="temperaturecurrent">
+				
+				<div class="widget-header">
+					<h3>温度实时数据</h3>
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content"  style="display:flex;align-items: stretch;" >
+
+				    	 <div class="pull-left">
+				    	 	 <div class="form-horizontal">
+						     <div  style="width:200px;" >
+						     	<input style="width:150px;display: block;" type="text"  class="input-large search-query " placeholder="请输入仪器编号" style="&quot;margin-left:13px">
+								<ul  style="width:150px;background: #fff;display: none;" id="tree" class="ztree" >
+									
+								</ul>
+						     </div> 
+			     			</div>
+					  	 </div>	
+					     <div class="pull-left" >					     
+						     <button class="btn btn-info btn-search" onclick="getAjaxCurrent()">查找</button>  
+						     <button class="btn btn-info btn-search" style="margin-left:3px">重置</button>			
+					     </div>						  	 
+
+					  	 
+					  	<div class="pull-right" style="margin-left: 300px;">
+						  	选择查看的方式：
+						    <label class="checkbox">
+						      <input type="checkbox" class="s_table"> 表格					      
+						    </label>	
+						    <label class="checkbox">
+						      <input type="checkbox" class="s_chart"> 曲线图					      
+						    </label>	
+					    </div> 
+
+			    </div> 
+
+				
+				<div class="widget-content s_table" style="display:none;">
+		
+					  <table class="table table-hover">
+					      <thead>
+					        <tr>
+					          <th>序号</th>
+					          <th>设备编号</th>
+					          <th>temperature(℃)</th>					          
+					          <th>接收时间</th>		          
+					        </tr>
+					      </thead>
+					      <tbody>
+
+					      </tbody>
+					    </table>
+					
+				</div> <!-- /widget-content -->														
+				<div class="widget-content s_chart" id="temperatureCurrentLine" style="min-width:400px;height:400px;display:none;">
+									
+				</div> <!-- /widget-content -->			
+			</div> <!-- /widget -->
+
+			<div class="widget" id="temperaturehis">
+				
+				<div class="widget-header">
+					<h3>温度历史查询</h3>
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content"  style="display:flex;align-items: stretch;">
+					
+					<div class="pull-left">
+						 <div class="form-horizontal">
+
+				      <div class="control-group">				      	
+				        <label class="control-label" for="hXlh">仪器编号:</label>
+				        <div class="controls">
+					     	<input id="hXlh" style="width:150px;display: block;" type="text"  class="input-large search-query " placeholder="请输入仪器编号" style="&quot;margin-left:13px">
+							<ul  style="width:150px;background: #fff;display: none;" id="tree" class="ztree" >
+								
+							</ul>
+				       				      		
+			      		</div>		
+				      </div>
+				      <div class="control-group">
+				        <label class="control-label" for="hFrom">日期 从:</label>
+				        <div class="controls">
+				          <input  type="date" id="hFrom">
+				        </div>
+				      </div>
+				      <div class="control-group">
+				        <label class="control-label" for="hTo">日期 至:</label>
+				        <div class="controls">
+				          <input type="date" id="hTo">
+				        </div>
+				      </div>
+				      <div class="control-group">
+				        <div class="controls">
+				          <button class="btn" onclick="getAjaxHis();">查询</button>
+				        </div>				        				       
+				      </div>
+				      </div>
+				    </div>
+			    	<div class="pull-right" style="margin-left: 300px;">
+					  		选择查看的方式：
+					    <label class="checkbox">
+					      <input type="checkbox" class="s_table"> 表格					      
+					    </label>	
+					   
+				    </div> 
+				</div>	
+				
+				<div class="widget-content s_table" style="display:none;">
+					<div class="bs-example" id="temperatureHis" data-example-id="hoverable-table">
+					    <table class="table table-hover ">
+					      <thead>
+					        <tr>
+					          <th>序号</th>
+					          <th>日期</th>
+					          <th>设备编号</th>
+					          <th>温度最大值</th>
+					          <th>温度最小值</th>
+					          <th>温度[一天>=35μg/m³]报警 </th>
+					          <th>数据错误统计 </th>			          
+					          <th>总记录数</th>          
+					        </tr>
+					      </thead>
+					      <tbody>
+					      </tbody>
+					    </table>
+					  </div>
+					
+				</div> <!-- /widget-content -->
+				
+			</div> <!-- /widget -->	
+		
+	    </div>
+	
+	  </div>
+	</div>	
+			
+	</div>
+<div>{include file="index/footer"/}	</div>
+<script type="text/javascript">
+	function drawTemperatureCurrentLine(arr,data){
+	var chart = new Highcharts.Chart('temperatureCurrentLine', {
+    title: {
+        text: '温度实时数据',
+        x: -20
+    },
+    credits: {  
+    enabled: false // remove high chart logo hyper-link  
+    }, 
+    xAxis: {
+        categories: arr
+    },
+    yAxis: {
+        title: {
+            text: '(℃)'
+        },
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
+    },
+    tooltip: {
+        valueSuffix: '°C'
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+        borderWidth: 0
+    },
+    series:data		
+	
+	
+	});
+}
+</script>
+<script type="text/javascript">
+$("input[type=checkbox]").click(function(){
+	var $class=$(this).attr("class");
+	var $trigger=$(this).parents(".widget-content").siblings("."+$class);
+		
+	if($(this).is(':checked')){
+		$trigger.css("display","block");
+	}else{
+		$trigger.css("display","none");
+	}
+})
+</script>
+<SCRIPT LANGUAGE="JavaScript">
+   var sqlname;
+   var zTreeObj;
+   // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+   var setting = {
+   		check: {
+		enable: true,
+		chkStyle: "radio",
+        radioType: "all"   //对所有节点设置单选
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+	callback: {
+		onCheck: zTreeOnCheck,   
+		onClick: function (e, treeId, treeNode, clickFlag) {
+                   zTreeObj.checkNode(treeNode, !treeNode.checked, true);   
+                } 
+	}		
+   };
+   
+   function zTreeOnCheck(event, treeId, treeNode) {
+   	
+	 var treeObj=$.fn.zTree.getZTreeObj("tree");
+
+	
+	//实现最小父元素被选中时所有子元素被选中(要么全选要么全不选)
+	console.log('是否有事件选中'+treeNode.checked)
+	//存储选中框的信息
+	var nodes = treeObj.getCheckedNodes(true);	
+
+	if (treeNode.children==null&&treeNode.checked==true) {			
+	
+		for(let i=0;i<nodes.length;i++){
+			if(nodes[i].xlh!=null){
+				
+				$('.search-query').empty();
+				$('.search-query').val(nodes[i].xlh);
+				nodeName=nodes[i].name;
+			};
+			}
+		}	
+	};
+
+
+  setting.check.chkboxType = { "Y" : "ps", "N" : "ps" };
+   // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+
+   $(document).ready(function(){
+
+   	$.ajax({
+   		url:"/index/ztree/init",
+   		type:"get",
+   		dataType: 'json', 
+   		success:function(data){
+    		console.log(data); 			
+			zTreeObj = $.fn.zTree.init($(".ztree"), setting, data);
+   		},
+   		error: function(jqXHR, textStatus, errorThrown){
+    		alert('error ' + textStatus + " " + errorThrown);  
+    	}
+   	})
+   			
+
+   });
+  
+  
+//定义事件
+	$("input.search-query").on("click",function(){
+		$(this).siblings("ul.ztree").fadeIn("slow");
+		
+	})
+ 
+      function hideMenu() {
+        $("ul.ztree").fadeOut("fast");
+    }
+      $("body").bind("mousedown", 
+    function(event){
+        if (!(event.target.class == "ztree" || $(event.target).parents(".ztree").length>0)) {
+            hideMenu();
+        }
+    }); 
+    function getAjaxCurrent(){
+		Arry=[];
+		xArrLine=[];
+		var obj=new Object;
+		obj.name=nodeName;
+		obj.data=[];	
+	
+    	if(nodeName==null){   		
+	    	layer.msg('节点名称不能为空');    		
+    		return;
+    	} 
+  		$.ajax({
+			type:"get",
+			url:"/index/ztree/linedata",
+			data:{nodename:nodeName},
+			success:function(data){	
+			//将json转化为字符串
+			var str = JSON.stringify(data);
+			//将字符串转化为数组对象
+			data = JSON.parse(str);
+			//alert(data.data[0].p10);
+	    	layer.msg('加载完成');
+				console.log(data)	
+				$("#temperaturecurrent .s_table tbody").empty();
+				for(let i=0;i<data.data.length;i++){
+						if(data.data[i]!=null){
+								$("#temperaturecurrent .s_table tbody").append("<tr><th>"+(i+1)+"</th><td>"+data.data[i].xlh+"</td> <td>"+data.data[i].wd+"</td><td>"+data.data[i].time+"</td></tr>")
+								xArrLine.push(data.data[i].time);
+							
+								obj.data.push(parseInt(data.data[i].wd));							
+						
+						}
+
+				}
+				 Arry.push(obj);
+					 
+				setTimeout(function(){			
+					drawTemperatureCurrentLine(xArrLine,Arry);		
+				},500)				
+			},
+
+			error:function(data,textStates){
+	
+				console.log('error')
+				console.log(data)
+				console.log(textStates)			
+				
+			}
+			
+			
+		})   	
+    	
+    	
+    	
+    }
+
+
+function getAjaxHis(){
+			
+			
+			var xlh=$("#temperaturehis input#hXlh").val();
+			var dateFrom=$("#temperaturehis input#hFrom").val();
+			var dateTo=$("#temperaturehis input#hTo").val();
+			!xlh&&layer.msg('序列号不能为空'); 
+			!dateTo&&layer.msg("终止日期不能为空");
+			!dateFrom&&layer.msg('起始日期不能为空'); 
+			
+			if(xlh&&dateFrom&&dateTo!=null){
+	    	layer.msg('正在加载中，请稍候.......');
+				
+				console.log("xlh,dateFrom,dateTo",xlh,dateFrom,dateTo);
+				if(dateFrom<dateTo||dateFrom==dateTo){
+				 		$.ajax({
+						type:"get",
+						url:"/index/nav/findhis",
+						data:{Xlh:xlh,DateFrom:dateFrom,DateTo:dateTo},
+						success:function(data){
+						//将json转化为字符串
+						var str = JSON.stringify(data);
+						//将字符串转化为数组对象
+						data = JSON.parse(str);
+	    				layer.msg('加载完成');
+							
+							  $("#temperaturehis .s_table tbody").empty();
+								for(let i=0;i<data.length;i++){
+									if(data[i][0]!=null&&data[i][0].time){
+									$("#temperaturehis .s_table tbody").append("<tr><th>"+(i+1)+"</th><td>"+(data[i][0].time).slice(0,10)+"</td> <td>"+data[i][0].xlh+"</td><td>"+data[i][0].maxwd+"</td><td>"+data[i][0].minwd+"</td> <td>"+data[i][0].counttemperture+"</td><td>"+data[i][0].temperaturestate2+"</td><td>"+data[i][0].count+"</td></tr>")
+										}
+									}
+			
+							console.log(data)	
+						},
+						error:function(data,textStates){
+				
+							console.log('error')
+							console.log(data)
+							console.log(textStates)			
+							
+						}									
+				})	
+				
+				
+				}else{
+					layer.msg('请输入正确的时间'); 
+				}
+								
+			}
+			
+}
+
+</SCRIPT>
+
+</body>
+</html>

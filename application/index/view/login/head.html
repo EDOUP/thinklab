@@ -1,0 +1,38 @@
+<div class="navbar navbar-fixed-top " style="color:white">	
+	<div class="navbar-inner">		
+		<div class="container-fluid">
+			
+			<a class="brand" href="#">后台管理页面</a>
+			
+			<div class="nav-collapse">
+			
+				<ul class="nav pull-right">
+
+					
+					<li class="divider-vertical"></li>
+
+					<li class="dropdown">
+						<%if(locals.islogin){%>		       				 
+						<a data-toggle="dropdown" class="dropdown-toggle " href="#"> <%= test %> <b class="caret"></b></a>
+						
+						<ul class="dropdown-menu">							
+							<li>
+								<a href="./logout"><i class="icon-off"></i> Logout</a>
+							</li>
+						</ul>
+						<%}else{%>
+							
+						<a data-toggle="dropdown" class="dropdown-toggle " href="./login"> 登陆 </a>							
+						<% } %> 						
+						
+					</li>
+
+				</ul>
+				
+			</div>
+			
+		</div> 
+		
+	</div>
+	
+</div>

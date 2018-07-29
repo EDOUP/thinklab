@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>报修</title>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap-responsive.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+    <script src="/static/javascripts/jquery-1.7.2.min.js"></script>
+    <script src="/static/javascripts/bootstrap.js" type="text/javascript"></script>
+  <style type="text/css">
+    .bookRepair{
+        width: 200px;  
+        position: absolute;  
+        margin-left: -150px;  
+        margin-top: -200px;  
+        top: 50%;  
+        left: 50%;  
+
+    }
+  </style>
+</head>
+<body>
+
+<div>{include file="../application/index/view/index/header.html"/}</div>
+  <div id="content" >{include file="../application/index/view/index/sidebar-top.html"/}</div>
+
+  <div class="bookRepair">
+    <div class="col-lg-1 col-md-1"></div>
+    <div class="col-lg-10  col-md-10 auto-padding">
+      <div class="input_group equip_input">
+        <form method="post" action="/user/bookrepair/bookrepairup">
+          <div class="info">
+            <span>报修人:</span>
+            <input type="text" name="person">
+          </div >
+          <div class="info">
+            <span>手机号码:</span>
+            <input type="text" name="tel">
+          </div >
+          <div class="info">
+            <span>设备编号:</span>
+            <input type="text" name="id">
+          </div>
+          <div class="textarea info" >
+            <span>故障描述:</span>
+            <textarea cols="30" rows="10" name="describe" placeholder="150字以内" maxlength="150"></textarea>
+          </div>
+          <div class="info err_info" v-show="errShow">
+            <span></span>
+            <div id="error" :class="{'submitSuccess': isSubmitSuccess}" class="error_reg">{{err}}</div>
+          </div>
+          <div class="info">
+            <span></span>
+            <input type="submit" class='submit' value="提交">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<style >
+  .bookRepair
+    .input_group
+      .info
+        input
+
+        .submitSuccess
+          border none!important
+          color #fff!important
+          background #5cb85c!important
+    .textarea
+      span
+        vertical-align top
+      textarea
+        background transparent
+        width 60%
+        min-width 240px
+        border-radius 4px 4px
+        margin-left 0!important
+        outline none
+        padding-left 8px
+        /*border 1px solid #949494*/
+        height 200px
+        font-size 14px
+
+  th{
+    white-space: nowrap;
+  }
+  .container{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .main {
+    padding-top: 80px;
+  }
+  .user {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+  }
+  .container.main.clearfix{
+    min-height: 100%;
+  }
+  .containter-main{
+    padding-bottom: 140px;
+  }
+  .clearfix:after {
+    display: block;
+    content: '';
+    clear: both;
+    height: 0;
+    visibility: hidden;
+  }
+  @media  screen and ( max-width: 991px) {
+    .main{
+      padding-top: 70px;
+    }
+  }
+</style>
+</body>
+</html>

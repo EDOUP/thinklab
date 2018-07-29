@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>设备查询</title>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap-responsive.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stylesheets/theme.css">
+
+    <script type="text/javascript" src="/static/javascripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="/static/javascripts/bootstrap.js"></script>
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdn.bootcss.com/layer/3.0.3/layer.min.js"></script> 
+    <link rel="stylesheet" href="/static/css/pick-pcc.min.1.0.1.css">
+    <script type="text/javascript" src="/static/javascripts/pick-pcc.min.1.0.1.js"></script>
+    <style type="text/css">
+     .equipment{
+      float: left;
+      margin: 20px;
+     }
+     .equip_search_all{
+      float: left;
+     }
+
+   </style>
+
+</head>
+<body>
+ 
+  <div >{include file="index/header"/}</div>
+  <div id="content" >{include file="index/sidebar-top"/}</div>   
+
+  <div class="equipment">
+       {include file="equipment/equip-left"}
+  </div>
+ 
+  <div class='equip_search_all' >
+    <div class="input-group equip_search_input" >
+       <input type="text" class="form-control" placeholder="8位设备编号" id="equipNumber">
+        <span><img src="/static/images/search.png" id="imgSearch" width="45px" ></span>
+    </div>
+
+    <div class='table-responsive showSearchOne' style="display: none" >
+      <table class='table table-striped table-bordered table-hover'>
+        <thead>
+        <tr>
+          <th>设备编号</th>
+          <th>设备类型</th>
+          <th>设备型号</th>
+          <th>安装日期</th>
+          <th>使用单位</th>
+          <th>单位地址</th>
+          <th>单位联系人</th>
+          <th>联系人电话</th>
+          <th class="equip-status">设备状态</th>
+          <th>监控链接</th>
+          <th class="operation nowrap">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td  id="oneId" ></td>
+          <td  id="oneType"></td>
+          <td  id="oneVersion"></td>
+          <td  id="oneInstalldate"></td>
+          <td  id="oneCompany"></td>
+          <td  id="oneAddress"></td>
+          <td  id="oneLinkman"></td>
+          <td  id="oneTell"></td>
+          <td  id="oneStatus"></td>
+          <td>
+            <button type="button" data-toggle="modal" data-target="#showRTMPDetail" class="btn btn-primary btn-xs watchlink watch"  >查看</button>
+          </td>
+          <td class="operation-td nowrap">
+            <button type="button" data-toggle="modal" data-target="#changeEquipInfo" class="btn btn-warning btn-xs operation-change"  >修改</button>
+            <button type="button" class="btn btn-danger btn-xs" >删除</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div  class="deleteWarn" id="reswarn"></div> 
+    <hr>
+    <div class="equip_all">
+      <input type="checkbox" checked="checked" class="showAllInput"><span>显示所有设备</span>
+    </div>
+    <div class='table-responsive showAndHide'>
+      <table class='table table-striped table-bordered table-hover'>
+        <thead>
+        <tr>
+          <th>设备编号</th>
+          <th>设备类型</th>
+          <th>设备型号</th>
+          <th>安装日期</th>
+          <th>使用单位</th>
+          <th>单位地址</th>
+          <th>单位联系人</th>
+          <th>联系人电话</th>
+          <th class="equip-status">设备状态</th>
+          <th>监控链接</th>
+          <th class="operation nowrap">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+          {foreach name="equips" item="equip" }  
+        <tr>
+          <td>{$equip.id}</td>
+          <td>{$equip.type}</td>
+          <td>{$equip.version}</td>
+          <td>{$equip.install_date}</td>
+          <td>{$equip.company}</td>
+          <td>{$equip.co_addr}</td>
+          <td>{$equip.co_linkman}</td>
+          <td>{$equip.co_tel}</td>
+
+          <td><span class='pointer'>{$equip.status}</span></td>
+          <td>
+            <!-- <span v-if="!equip.rtmp">无</span> -->
+            <button type="button" data-toggle="modal" data-target="#showRTMPDetail" class="btn btn-primary btn-xs watchlinkv watch" >查看</button>
+
+          </td>
+          <td class="operation-td nowrap">
+            <button type="button" data-toggle="modal" data-target="#changeEquipInfo" class="btn btn-warning btn-xs operation-change" onclick="changeEquipInfo('{$equip.id}','{$equip.type}','{$equip.version}','{$equip.install_date}','{$equip.company}','{$equip.co_addr}','{$equip.co_linkman}','{$equip.co_tel}','{$equip.rtmp}')">修改</button>
+            <button type="button" class="btn btn-danger btn-xs">删除</button>
+          </td>
+        </tr>
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="modal fade" id="showRTMPDetail" tabindex="-1" role="dialog" aria-labelledby="showRTMPDetail" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="showDetailLabel">监控链接：</h4>
+          </div>
+          <div class="modal-body">
+            <span id='selectedRtmp'></span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="changeEquipInfo" tabindex="-1" role="dialog" aria-labelledby="changeEquipInfo" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">修改设备信息：</h4>
+          </div>
+          <div class="modal-body">
+            <form class="input_group">
+              <div class="info">
+                <span>设备编号:</span>
+                <input type="text" v-model="edit.id" name="editId">
+              </div>
+              <div class="info">
+                <span>设备类型:</span>
+                <input type="text" v-model="edit.type" name="editType">
+              </div>
+              <div class="info">
+                <span>设备型号:</span>
+                <input type="text" placeholder="" v-model="edit.version" name="editVersion">
+              </div>
+              <div class="info">
+                <span>安装日期:</span>
+                <input type="text" v-model="edit.install_date" name="editInstallDate" placeholder="格式：2018-01-01">
+              </div>
+              <div class="info">
+                <span>监控链接:</span>
+                <input type="text" v-model="edit.rtmp" name="editRtmp">
+              </div>
+              <div class="info">
+                <span>使用单位:</span>
+                <input type="text" v-model="edit.company" name="editCompany">
+              </div>
+              <div class="info addr-select">
+                <span>单位地址:</span>
+                <!-- 引入外部模板 -->
+                     <span class="a">
+                    <a href="javascript:void(0)" class="pick-area pick-area4" name=""></a>
+                    <input type="text"  name="editAddress" placeholder="选择完后可在此补充">
+                  </span>
+              </div>
+              <div class="info">
+                <span>原地址:</span>
+                <input type="text" v-model="edit.co_addr.str" name="editOldAddress" class="origin-addr" readonly="readonly">
+              </div>
+              <div class="info">
+                <span>单位联系人:</span>
+                <input type="text" v-model="edit.co_linkman" name="editLinkman">
+              </div>
+              <div class="info">
+                <span>联系人电话:</span>
+                <input type="text" v-model="edit.co_tel" name="editCoTel">
+              </div>
+              <div class="info err_info" v-show="edit.errShow">
+                <span></span>
+                <div id="error" :class="isSubmitSuccess" class="error_reg"></div>
+              </div>
+              <div class="info">
+                <span style="font-size: 0"></span>
+                <input type="button" class='submit' id="submit" onclick="canSubmit()" value="提交">
+              </div>
+            </form>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" ref="closeModal">关闭</button>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+ <script type="text/javascript">
+             $("#loading").ajaxStart(function(){
+                     $(this).hide();
+             });
+    //查询某一设备信息
+       $(function(){
+            $("#imgSearch").click(function(){ 
+              var num=$("#equipNumber").val();  
+               if (num!='') {
+                  $.ajax({
+                    type:"post",
+                    url:"/index/equipment/equipsearchone", 
+                    data:{number:num},
+                    success:function(result){
+                      if (result!='') {
+                        var str= JSON.stringify(result);
+                       $('.showSearchOne').show(); 
+                       showone(str);
+                        $("#reswarn").text("");
+                     }
+                     else{ $("#reswarn").text("请输入正确的8位设备编号");}
+                     },                
+                    error:function(){layer.msg("error！请联系管理员")},
+                  });
+                }else{
+                  $("#reswarn").text("请输入设备编号");
+                }
+            });
+          });
+
+    function showone(data){ 
+       data1=JSON.parse(data);
+             $("#oneId").text(data1[0].id);
+             $("#oneType").text(data1[0].type);
+             $("#oneVersion").text(data1[0].version);
+             $("#oneInstalldate").text(data1[0].install_date);
+             $("#oneCompany").text(data1[0].company);
+             $("#oneAddress").text(data1[0].co_addr);
+             $("#oneLinkman").text(data1[0].co_linkman);
+             $("#oneTell").text(data1[0].co_tel);
+             $("#oneStatus").text(data1[0].status);
+        };
+
+        
+      $(function(){
+        // 查看设备视频链接
+        $(".watch").click(function(){
+         var id=$(this).parent().parent().find('td').eq(0).html();        
+                 layer.msg(id); 
+                    $.ajax({
+                    type:"post",
+                    url:"/index/equipment/equipsearchlink", 
+                    data:{searchid:id},
+                    success:function(result){
+                        var str= JSON.stringify(result);
+                         data=JSON.parse(str);
+                         $('#selectedRtmp').text(data[0].rtmp);
+                     },                
+                    error:function(){alert("error")},
+                  });
+                }); 
+
+        // 删除设备
+        $(".btn-danger").click(function(){
+         var id=$(this).parent().parent().find('td').eq(0).html();        
+                layer.confirm('你确定删除设备'+id,{title:"删除设备"},function() 
+                  {
+                    $.ajax({
+                            type:"post",
+                            url:"/index/equipment/equipdelete", 
+                            data:{searchid:id},
+                            success:function(result){
+                                 layer.msg('删除成功');
+                                 window.location.reload();               
+                             },                
+                            error:function(){layer.msg("error!请联系管理员")},
+                          });            
+                  });
+                });
+         
+         //显示/关闭所有
+        $(".showAllInput").change(function(){ 
+           if($(".showAllInput").is(':checked'))
+          {
+           $('.showAndHide').slideDown('slow');       
+         }else{
+
+             $('.showAndHide').slideUp('slow'); 
+      
+             }
+        });
+     });
+      //三级省市县联动插件
+    $(".pick-area4").pickArea({
+        "format":"province/city/county", //格式
+        "width":"300",//设置“省市县”文本边框的宽度
+        "height":"30",//设置“省市县”文本边框的高度
+        "borderColor":"#435abd",//设置“省市县”文本边框的色值
+        "arrowColor":"#435abd",//设置下拉箭头颜色
+        "listBdColor":"#435abd",//设置下拉框父元素ul的border色值
+        "color":"#435abd",//设置“省市县”字体颜色
+        "fontSize":"8px",//设置字体大小
+        "hoverColor":"#435abd",
+        "paddingLeft":"30px",//设置“省”位置处的span相较于边框的距离
+        "arrowRight":"30px",//设置下拉箭头距离边框右侧的距离
+        "maxHeight":"300px",
+        //"preSet":"",//数据初始化 ；这里的数据初始化有两种方式，第一种是用preSet属性设置，第二种是在a标签里使用name属性设置
+        "getVal":function(){
+        //这个方法是每次选中一个省、市或者县之后，执行的方法
+            //console.log($(".pick-area-hidden").val())
+            //console.log($(".pick-area-dom").val())
+            var thisdom = $("."+$(".pick-area-dom").val());
+            //返回的是调用这个插件的元素pick-area，$(".pick-area-dom").val()的值是该元素的另一个class名，这个class名在dom结构中是唯一的，不会有重复，可以通过这个class名来识别这个pick-area
+            thisdom.next().val($(".pick-area-hidden").val());
+            //$(".pick-area-hidden").val()是页面中隐藏域的值，存放着每次选中一个省、市或者县的时候，当前文本存放的省市县的最新值，每点击一次下拉框里的li，这个值就会立即更新
+        },
+    });
+     //修改设备信息
+    function changeEquipInfo(id,type,version,install_date,company,co_addr,co_linkman,co_tel,rtmp){
+      console.log("id:"+id+"\n类型:"+type+"\n版本:"+version+"\n安装日期:"+install_date+"\n监控链接:"+rtmp+"\n使用单位:"+company+"\n原地址:"+co_addr+"\n单位联系人:"+co_linkman+"\n联系人电话:"+co_tel);
+      //设初值
+      $(".input_group").children('div').children('input').eq(0).val(id);
+      $(".input_group").children('div').children('input').eq(1).val(type);
+      $(".input_group").children('div').children('input').eq(2).val(version);
+      $(".input_group").children('div').children('input').eq(3).val(install_date);
+      $(".input_group").children('div').children('input').eq(4).val(rtmp);
+      $(".input_group").children('div').children('input').eq(5).val(company);
+      $(".input_group").children('div').children('input').eq(6).val(co_addr);
+      $(".input_group").children('div').children('input').eq(7).val(co_linkman);
+      $(".input_group").children('div').children('input').eq(8).val(co_tel);
+      $(".input_group").children('div').children('span').children('input').val("");
+      this.old_id=id;
+      this.old_addrss=co_addr;
+    }
+    function canSubmit(){
+      //获修改后的值
+      let newId=$(".input_group").children('div').children('input').eq(0).val();
+      let newType=$(".input_group").children('div').children('input').eq(1).val();
+      let newVersion=$(".input_group").children('div').children('input').eq(2).val();
+      let newDate=$(".input_group").children('div').children('input').eq(3).val();
+      let newRtmp=$(".input_group").children('div').children('input').eq(4).val();
+      let newCompany=$(".input_group").children('div').children('input').eq(5).val();
+      let newAddress=$(".input_group").children('div').children('span').children('input').val();
+      let newLinkman=$(".input_group").children('div').children('input').eq(7).val();
+      let newTel=$(".input_group").children('div').children('input').eq(8).val();
+      //输入校验
+      console.log("修改设备原id："+this.old_id);
+      if(newAddress==0){newTipAddress=this.old_addrss
+        }else{
+                newTipAddress=Trim(newAddress,true);//去除所有空格
+            };
+      console.log("修改后id:"+newId+"\n修改后类型:"+newType+"\n修改后版本:"+newVersion+"\n修改后安装日期:"+newDate+"\n修改后监控链接:"+newRtmp+"\n修改后使用单位:"+newCompany+"\n修改后地址:"+newTipAddress+"\n修改后单位联系人:"+newLinkman+"\n修改后联系人电话:"+newTel);
+
+          $.ajax({
+                type:"post",
+                url:"/index/equipment/equipupdate",
+                data:{oldId:this.old_id,newId:newId,newType:newType,newVersion:newVersion,newDate:newDate,newRtmp:newRtmp,newCompany:newCompany,newAddress:newTipAddress,newLinkman:newLinkman,newTel:newTel},
+                success:function(result){
+                  console.log("success,result="+result);
+                  if(result==1){$(".error_reg").text("修改成功")
+                    window.location.reload();
+                }else{$(".error_reg").text("修改失败，请联系管理员")}
+                },
+                error:function(result){
+                  console.log("error:"+result);
+                  $(".error_reg").text("提交失败")
+                }
+          });
+    }
+     function Trim(str,is_global)
+        {
+           var result;
+            result = str.replace(/(^\s+)|(\s+$)/g,"");
+            if(is_global==true)
+            {
+                result = result.replace(/\s/g,"");
+             }
+            return result;
+}
+   </script>
+<style>
+  .deleteWarn{
+    color: #e4393c;
+  }
+  .equip_search_all {
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  .equip_search_input{
+    margin-bottom: 20px;
+  }
+  .equip_search_input input{
+    box-shadow: none!important;
+    height: 39px;
+  }
+  .equip_search_input span{
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+  .equip_search_input .glyphicon{
+    font-size: 16px;
+    margin-right: 0!important;
+  }
+  .equip_all{
+    margin-bottom: 20px;
+  }
+  table a{
+    color: #2277da;
+  }
+  #collapseOne table,#collapseTwo table{
+    border: none;
+    margin-bottom: 0;
+  }
+  .showAllInput{
+    -webkit-appearance: checkbox;
+    vertical-align: top;
+  }
+  .equip_search_all form .info span{
+    width: 80px!important;
+  }
+  .equip_search_all form #error.error_reg{
+    margin-left: 0!important;
+  }
+
+  @media  screen and ( min-width: 992px) {
+    .equip_search_all form .addr-detail{
+      margin-top: 10px;
+      display: block!important;
+      margin-left: 80px;
+    }
+  }
+  @media  screen and ( max-width: 991px) {
+    .equip_search_all{
+      padding: 20px;
+    }
+  }
+  .operation-td{
+    font-size: 0;
+  }
+  .operation-change{
+    margin-right: 5px;
+  }
+  table th,.nowrap{
+    white-space: nowrap!important;
+  }
+  .origin-addr{
+    border: none!important;
+  }
+</style>
+</body>
+</html>
+
+

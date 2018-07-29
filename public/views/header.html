@@ -1,0 +1,40 @@
+<div class="navbar navbar-fixed-top " style="color:white">	
+	<div class="navbar-inner">		
+		<div class="container-fluid">
+			
+			<a class="brand" href="#">后台管理页面</a>
+			
+			<div class="nav-collapse">
+			
+				<ul class="nav pull-right">
+
+					
+					<li class="divider-vertical"></li>
+					{if $Think.session.user.system == 2}
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle " href="/index/home/index">切换系统 <b class="caret"></b></a></li>
+					{/if}
+					<li class="dropdown">
+				       				 
+						<a data-toggle="dropdown" class="dropdown-toggle " href="#">{$Think.session.user.username}<b class="caret"></b></a>
+						
+						<ul class="dropdown-menu">							
+							<li>
+								<a href="/index/login/quit"><i class="icon-off"></i> 退出</a>
+							</li>
+						</ul>
+						
+						<!-- 
+						<a data-toggle="dropdown" class="dropdown-toggle " href="./login"> 登陆 </a>										
+						-->				
+					</li>
+
+				</ul>
+				
+			</div>
+			
+		</div> 
+		
+	</div>
+	
+</div>
+

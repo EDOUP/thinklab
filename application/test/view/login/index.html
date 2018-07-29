@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<script src="/javascripts/jquery-1.7.2.min.js"></script>
+		<title></title>
+		<script type="text/javascript">
+			$(document).ready(function(){
+
+		   	$.ajax({
+		   		url:"/test/login/login",
+		   		type:"post",
+		   		data: {treeNodeId:123,newName:'zhangsan'}, 
+		   		success:function(data){
+		   			alert(data.treeNodeId);
+		   		},
+		   		error: function(){
+		    		alert('error');
+		    	}
+		   	})
+		   			
+
+		   });
+		</script>
+	</head>
+
+	<body>
+
+		<form action="/test/login/login" method="post">
+			姓名<input type="text" name="name"/><br />
+			密码<input type="password" name="password" /><br />
+			<input type="submit" />
+		</form>
+	</body>
+
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,108 @@
+<div class="account-container">
+	<ul id="tree" class="ztree"></ul>
+</div>	
+	
+<SCRIPT LANGUAGE="JavaScript">
+   var zTreeObj;
+   // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+   var setting = {
+   		check: {
+		enable: true,
+		chkStyle: "checkbox",
+		
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+	callback: {
+		onCheck: zTreeOnCheck,   
+		onClick: function (e, treeId, treeNode, clickFlag) {
+                   zTreeObj.checkNode(treeNode, !treeNode.checked, true);   
+                } 
+	}		
+   };
+   
+   function zTreeOnCheck(event, treeId, treeNode) {
+   	
+	var treeObj = $.fn.zTree.getZTreeObj("tree");
+	var nodes ;	
+	
+	//实现最小父元素被选中时所有子元素被选中(要么全选要么全不选)
+	console.log('是否有事件选中'+treeNode.checked)
+		//全选
+		if (treeNode.children==null&&treeNode.checked==true) {			
+			var t_parent=treeNode.getParentNode();
+			for(i=0;i<t_parent.children.length;i++){				
+				treeObj.checkNode(treeObj.getNodeByParam("id", t_parent.children[i].id, null),true, true);				
+			}					
+		}
+		//全不选
+		if (treeNode.children==null&&treeNode.checked==false) {			
+			var t_parent=treeNode.getParentNode();
+			for(i=0;i<t_parent.children.length;i++){							  		
+				treeObj.checkNode(t_parent.children[i],false,true,false);			
+			}
+		}
+
+	//存储选中框的信息
+	var nodes = treeObj.getCheckedNodes(true);	
+	storeCheckNodes(nodes);
+	
+	};
+	function storeCheckNodes(nodes){
+	console.log("所有选中的点----------------")
+	console.log(nodes)
+	console.log("----------------")
+	
+	
+	//将第一个点设为地图中心点 存储
+	if(nodes[4]!=undefined&&nodes[0].check_Child_State!=2){
+	console.log("中心点名字")
+	console.log(nodes[1].name)
+	console.log("----------------")
+	
+	sessionStorage.setItem('center_longitude',nodes[4].longitude);
+	sessionStorage.setItem('center_latitude',nodes[4].latitude);
+		
+	}else{
+	console.log("中心点名字")
+	console.log(nodes[0].name)
+	console.log("----------------")
+	
+	sessionStorage.setItem('center_longitude',nodes[1].longitude);		
+	sessionStorage.setItem('center_latitude',nodes[1].latitude);
+
+	}
+	
+	var nodes_str = JSON.stringify(nodes); //野蛮的sessionstorage 需要转换下类型传的时候需要string类型
+	sessionStorage.setItem('nodes', nodes_str);//存入所有的选中node
+	
+
+		
+	}
+
+  setting.check.chkboxType = { "Y" : "ps", "N" : "ps" };
+   // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+
+   $(document).ready(function(){
+
+   	$.ajax({
+   		//url:"api/menuLeft",
+   		url:"/index/home/menuLeft",
+   		type:"get",
+   		dataType: 'json', 
+   		success:function(data){
+    		console.log(data); 			
+			zTreeObj = $.fn.zTree.init($("#tree"), setting,data);
+   		},
+   		error: function(jqXHR, textStatus, errorThrown){
+    		alert('error ' + textStatus + " " + errorThrown);  
+    	}
+   	})
+   			
+
+   });
+  </SCRIPT>
+				
